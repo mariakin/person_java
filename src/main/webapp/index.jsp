@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="css/bootstrap.min.css">
-<title>Студенческая группа</title>
+<title>Управление студентами</title>
 </head>
 <body>
 <div class="container-fluid">
@@ -18,8 +18,8 @@
 <div class="list-group text-center py-3 px-3">
 <h2>Функции системы</h2>
 <ul class="list-group list-group-flush">
-<li class="list-group-item list-group-itemprimary"><a href="#">Наименование</a>
-<li class="list-group-item list-group-iteminfo"><a href="#">Факультет</a>
+<li class="list-group-item list-group-itemprimary"><a href="/persons/group">Студенческая группа</a>
+<li class="list-group-item list-group-iteminfo"><a href="/persons/student">Студент</a>
 </ul>
  </div>
 <br><br>

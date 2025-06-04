@@ -1,54 +1,37 @@
 package controller;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 /**
- * Сервлет для обработки групп пользователей.
- * Доступен по URL: /HelloGroupServlet
- */
-@WebServlet("/HelloGroupServlet")
+* Сервлет для работы с группами
+*/
+@WebServlet("/group")
 public class GroupServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Конструктор по умолчанию
-     */
     public GroupServlet() {
         super();
     }
 
-    /**
-     * Обрабатывает GET-запросы.
-     * Отправляет HTML-страницу с приветствием.
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
-            throws ServletException, IOException {
-        response.setContentType("text/html; charset=UTF-8");
-        try (PrintWriter writer = response.getWriter()) {
-            writer.println("<!DOCTYPE html>");
-            writer.println("<html>");
-            writer.println("<head><title>GroupServlet</title></head>");
-            writer.println("<body>");
-            writer.println("<h2>Привет, GroupServlet!</h2>"); // Исправлено с RoleServlet на GroupServlet
-            writer.println("</body>");
-            writer.println("</html>");
-        }
+    protected void doGet(HttpServletRequest request,
+                        HttpServletResponse response) throws ServletException, IOException {
+        // Установка атрибутов для передачи в JSP
+        request.setAttribute("groupData", "Данные групп");
+        request.setAttribute("pageTitle", "Управление группами");
+        
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/group.jsp");
+        dispatcher.forward(request, response);
     }
 
-    /**
-     * Обрабатывает POST-запросы.
-     * Перенаправляет запрос в doGet().
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
-            throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request,
+                         HttpServletResponse response) throws ServletException, IOException {
+        // Обработка POST-запросов (добавление/изменение групп)
         doGet(request, response);
     }
 }
