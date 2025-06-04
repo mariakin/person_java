@@ -1,16 +1,18 @@
 package controller;
 
-import jakarta.servlet.RequestDispatcher;
+import domain.Student;
+import domain.Group;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import dataaccess.StudentDbDAO;
+import dataaccess.GroupDbDAO;
 
-/**
-* Сервлет для работы со студентами
-*/
+import java.io.IOException;
+import java.util.List;
+
 @WebServlet("/student")
 public class StudentServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -19,19 +21,50 @@ public class StudentServlet extends HttpServlet {
         super();
     }
 
-    protected void doGet(HttpServletRequest request,
-                        HttpServletResponse response) throws ServletException, IOException {
-        // Установка атрибутов для передачи в JSP
-        request.setAttribute("studentData", "Данные студентов");
-        request.setAttribute("pageTitle", "Управление студентами");
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html");
+        String userPath;
+        List<Student> students;
+        List<Group> groups;
         
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/student.jsp");
-        dispatcher.forward(request, response);
+        GroupDbDAO daoGroup = new GroupDbDAO();
+        StudentDbDAO daoStudent = new StudentDbDAO();
+        
+        try {
+            students = daoStudent.findAll();
+            groups = daoGroup.findAll();
+            
+            // Устанавливаем полные объекты Group для каждого студента
+            for (Student student : students) {
+                Group group = findById(student.getGroup().getId(), groups);
+                student.setGroup(group);
+            }
+            
+            request.setAttribute("students", students);
+            request.setAttribute("groups", groups);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        userPath = request.getServletPath();
+        request.getRequestDispatcher("/views/student.jsp").forward(request, response);
     }
 
-    protected void doPost(HttpServletRequest request,
-                         HttpServletResponse response) throws ServletException, IOException {
-        // Обработка POST-запросов (добавление/изменение студентов)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
         doGet(request, response);
+    }
+    
+    private Group findById(Long id, List<Group> groups) {
+        if (groups != null) {
+            for (Group group : groups) {
+                if (group.getId().equals(id)) {
+                    return group;
+                }
+            }
+        }
+        return null;
     }
 }

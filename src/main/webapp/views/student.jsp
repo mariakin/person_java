@@ -3,22 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="domain.Student"%>
 <%@ page import="domain.Group"%>
-<%
-Group g1 = new Group(1L, "ИВТ-101", "Информатика и вычислительная техника", 1, "Очная");
-Group g2 = new Group(2L, "ПИ-202", "Прикладная информатика", 2, "Очно-заочная");
-Group g3 = new Group(3L, "ИБ-301", "Информационная безопасность", 3, "Очная");
-Group g4 = new Group(4L, "ФИ-402", "Фундаментальная информатика", 4, "Заочная");
-Group[] groups = new Group[]{g1, g2, g3, g4};
-pageContext.setAttribute("groups", groups);
 
-Student s1 = new Student(1L, "Иванов", "Иван", "Иванович", "2000-05-15", "+79123456789", "ivanov@example.com", "ИВТ-101");
-Student s2 = new Student(2L, "Петров", "Петр", "Петрович", "2001-03-22", "+79234567890", "petrov@example.com", "ПИ-202");
-Student s3 = new Student(3L, "Сидорова", "Мария", "Сергеевна", "1999-11-30", "+79345678901", "sidorova@example.com", "ИБ-301");
-Student s4 = new Student(4L, "Кузнецов", "Алексей", "Дмитриевич", "2000-07-18", "+79456789012", "kuznetsov@example.com", "ФИ-402");
-
-Student[] students = new Student[]{s1, s2, s3, s4};
-pageContext.setAttribute("students", students);
-%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -71,13 +56,13 @@ pageContext.setAttribute("students", students);
                                         <td>${student.getBirthDate()}</td>
                                         <td>${student.getPhone()}</td>
                                         <td>${student.getEmail()}</td>
-                                        <td>${student.getGroup()}</td>
+                                        <td>${student.getGroupName()}</td>
                                         <td nowrap>
                                             <a href="#" role="button" class="btn btn-sm btn-outline-primary mr-1">
-                                                <img alt="Редактировать" src="images/icon-edit.png" width="16">
+                                                <img alt="Редактировать" src="images/edit.png" width="16">
                                             </a>
                                             <a href="#" role="button" class="btn btn-sm btn-outline-danger">
-                                                <img alt="Удалить" src="images/icon-delete.png" width="16">
+                                                <img alt="Удалить" src="images/delete.png" width="16">
                                             </a>
                                         </td>
                                     </tr>

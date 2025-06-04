@@ -16,12 +16,12 @@ public class Student {
     private String phone;
     private String email;
     // Группа студента
-    private String group;
+    private Group group;
 
     public Student() {
     }
 
-    public Student(String lastName, String firstName, String middleName, String group) {
+    public Student(String lastName, String firstName, String middleName, Group group) {
         this.lastName = lastName;
         this.firstName = firstName;
         this.middleName = middleName;
@@ -29,7 +29,7 @@ public class Student {
     }
 
     public Student(Long id, String lastName, String firstName, String middleName, 
-                  String birthDate, String phone, String email, String group) {
+                  String birthDate, String phone, String email, Group group) {
         this.id = id;
         this.lastName = lastName;
         this.firstName = firstName;
@@ -97,11 +97,11 @@ public class Student {
         this.email = email;
     }
 
-    public String getGroup() {
+    public Group getGroup() {
         return group;
     }
 
-    public void setGroup(String group) {
+    public void setGroup(Group group) {
         this.group = group;
     }
 
