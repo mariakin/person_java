@@ -28,11 +28,4 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.wst.jsdt.core.jsNature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>src/main/webapp/css/NewFile.css</name>
-			<type>1</type>
-			<location>C:/Users/admin/Desktop/bootstrap-5.0.2-dist/bootstrap-5.0.2-dist/css/bootstrap.min.css</location>
-		</link>
-	</linkedResources>
 </projectDescription>

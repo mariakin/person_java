@@ -11,11 +11,12 @@
 <body>
 <!-- Header -->
 <!-- Bootstrap CSS -->
-<link rel="stylesheet" href="webapp/css/bootstrap.min.css">
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/style.css">
 <!-- jQuery -->
 <script defer src="js/jquery-3.6.4.js"></script>
 <!-- Bootstrap JS + Popper JS -->
-8
+
 <script defer src="js/bootstrap.bundle.min.js"></script>
 
 <a href="/persons/">
@@ -25,7 +26,7 @@
 <nav class="navbar navbar-light bg-primary">
  <div class="container-fluid">
  <a class="navbar-brand" href="#">
- <img src="images/films.png" alt="" width="80"
+ <img src="images/person.png" alt="" width="80"
 height="80" >
  </a>
  <h2>Группы</h2>
