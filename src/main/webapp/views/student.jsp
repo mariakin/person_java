@@ -56,7 +56,7 @@
                                         <td>${student.getBirthDate()}</td>
                                         <td>${student.getPhone()}</td>
                                         <td>${student.getEmail()}</td>
-                                        <td>${student.getGroupName()}</td>
+                                        <td>${student.getGroup()}</td>
                                         <td nowrap>
                                             <a href="#" role="button" class="btn btn-sm btn-outline-primary mr-1">
                                                 <img alt="Редактировать" src="images/edit.png" width="16">
