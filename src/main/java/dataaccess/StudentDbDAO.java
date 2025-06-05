@@ -9,29 +9,29 @@ import java.util.List;
 import domain.Student;
 import domain.Group;
 
-/**
-* Класс реализации функций взаимодействия с базой данных для таблицы students
-*/
 public class StudentDbDAO implements RepositoryDAO<Student> {
 
     // SQL-запросы к таблице students
     private static final String SELECT_ALL_STUDENTS = 
-        "SELECT id, last_name, first_name, middle_name, birth_date, phone, email, group_id FROM students ORDER BY last_name ASC";
+        "SELECT id, last_name, first_name, middle_name, birth_date, phone, email, group_name FROM students";
     
     private static final String SELECT_STUDENT_BY_ID = 
-        "SELECT id, last_name, first_name, middle_name, birth_date, phone, email, group_id FROM students WHERE id = ?";
+        "SELECT id, last_name, first_name, middle_name, birth_date, phone, email, group_name FROM students WHERE id = ?";
     
     private static final String INSERT_STUDENT = 
-        "INSERT INTO students(last_name, first_name, middle_name, birth_date, phone, email, group_id) VALUES(?, ?, ?, ?, ?, ?, ?)";
+        "INSERT INTO students(last_name, first_name, middle_name, birth_date, phone, email, group_name) " +
+        "VALUES(?, ?, ?, ?, ?, ?, ?)";
     
     private static final String UPDATE_STUDENT = 
-        "UPDATE students SET last_name = ?, first_name = ?, middle_name = ?, birth_date = ?, phone = ?, email = ?, group_id = ? WHERE id = ?";
+        "UPDATE students SET last_name = ?, first_name = ?, middle_name = ?, birth_date = ?, " +
+        "phone = ?, email = ?, group_name = ? WHERE id = ?";
     
     private static final String DELETE_STUDENT = 
         "DELETE FROM students WHERE id = ?";
     
     private static final String SELECT_STUDENTS_BY_GROUP = 
-        "SELECT id, last_name, first_name, middle_name, birth_date, phone, email, group_id FROM students WHERE group_id = ?";
+        "SELECT id, last_name, first_name, middle_name, birth_date, phone, email, group_name " +
+        "FROM students WHERE group_name = ?";
 
     private ConnectionBuilder builder = new DbConnectionBuilder();
     
@@ -50,19 +50,18 @@ public class StudentDbDAO implements RepositoryDAO<Student> {
             pst.setString(4, student.getBirthDate());
             pst.setString(5, student.getPhone());
             pst.setString(6, student.getEmail());
-            pst.setLong(7, student.getGroup().getId());
+            pst.setString(7, student.getGroup().getGroupName()); // Используем имя группы
+            
             pst.executeUpdate();
             
-            ResultSet gk = pst.getGeneratedKeys();
-            Long id = -1L;
-            if (gk.next()) {
-                id = gk.getLong("id");
+            try (ResultSet gk = pst.getGeneratedKeys()) {
+                if (gk.next()) {
+                    return gk.getLong("id");
+                }
             }
-            gk.close();
-            return id;
-            
+            return -1L;
         } catch (Exception e) {
-            throw new Exception(e);
+            throw new Exception("Ошибка при добавлении студента", e);
         }
     }
 
@@ -77,12 +76,12 @@ public class StudentDbDAO implements RepositoryDAO<Student> {
             pst.setString(4, student.getBirthDate());
             pst.setString(5, student.getPhone());
             pst.setString(6, student.getEmail());
-            pst.setLong(7, student.getGroup().getId());
+            pst.setString(7, student.getGroup().getGroupName());
             pst.setLong(8, student.getId());
-            pst.executeUpdate();
             
+            pst.executeUpdate();
         } catch (Exception e) {
-            throw new Exception(e);
+            throw new Exception("Ошибка при обновлении студента", e);
         }
     }
 
@@ -93,30 +92,26 @@ public class StudentDbDAO implements RepositoryDAO<Student> {
             
             pst.setLong(1, id);
             pst.executeUpdate();
-            
         } catch (Exception e) {
-            throw new Exception(e);
+            throw new Exception("Ошибка при удалении студента", e);
         }
     }
 
     @Override
     public Student findById(Long id) throws Exception {
-        Student student = null;
         try (Connection con = getConnection();
              PreparedStatement pst = con.prepareStatement(SELECT_STUDENT_BY_ID)) {
             
             pst.setLong(1, id);
-            ResultSet rs = pst.executeQuery();
-            
-            if (rs.next()) {
-                student = fillStudent(rs);
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    return fillStudent(rs);
+                }
             }
-            rs.close();
-            
+            return null;
         } catch (Exception e) {
-            throw new Exception(e);
+            throw new Exception("Ошибка при поиске студента по ID", e);
         }
-        return student;
     }
 
     @Override
@@ -129,31 +124,27 @@ public class StudentDbDAO implements RepositoryDAO<Student> {
             while (rs.next()) {
                 list.add(fillStudent(rs));
             }
-            
+            return list;
         } catch (Exception e) {
-            throw new Exception(e);
+            throw new Exception("Ошибка при получении списка студентов", e);
         }
-        return list;
     }
 
-    // Дополнительный метод для получения студентов по группе
-    public List<Student> findByGroupId(String groupId) throws Exception {
+    public List<Student> findByGroupName(String groupName) throws Exception {
         List<Student> list = new LinkedList<>();
         try (Connection con = getConnection();
              PreparedStatement pst = con.prepareStatement(SELECT_STUDENTS_BY_GROUP)) {
             
-            pst.setString(1, groupId);
-            ResultSet rs = pst.executeQuery();
-            
-            while (rs.next()) {
-                list.add(fillStudent(rs));
+            pst.setString(1, groupName);
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    list.add(fillStudent(rs));
+                }
             }
-            rs.close();
-            
+            return list;
         } catch (Exception e) {
-            throw new Exception(e);
+            throw new Exception("Ошибка при поиске студентов по группе", e);
         }
-        return list;
     }
 
     private Student fillStudent(ResultSet rs) throws SQLException {
@@ -166,22 +157,11 @@ public class StudentDbDAO implements RepositoryDAO<Student> {
         student.setPhone(rs.getString("phone"));
         student.setEmail(rs.getString("email"));
         
-        // Создаем временный объект Group только с id
+        // Создаем временный объект Group только с именем
         Group group = new Group();
-        group.setId(rs.getLong("group_id"));
+        group.setName(rs.getString("group_name"));
         student.setGroup(group);
         
         return student;
-    }
-
-    public Student findById(Long id, List<Student> students) {
-        if (students != null) {
-            for (Student student : students) {
-                if (student.getId().equals(id)) {
-                    return student;
-                }
-            }
-        }
-        return null;
     }
 }
