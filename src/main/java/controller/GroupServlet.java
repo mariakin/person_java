@@ -42,8 +42,41 @@ public class GroupServlet extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        doGet(request, response);
-    }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+    		throws ServletException, IOException {
+    	GroupDbDAO dao = new GroupDbDAO();
+    	  
+    	    // Получаем параметры из формы
+    	    String name = request.getParameter("name");
+    	    String faculty = request.getParameter("faculty");
+    		int course = Integer.parseInt(request.getParameter("course"));
+    	    String educationType = request.getParameter("educationType");
+    	    
+    	    // Создаем новый объект Group
+    	    Group newGroup = new Group();
+    	    newGroup.setId(5l);
+    	    newGroup.setName(name);
+    	    newGroup.setFaculty(faculty);
+    	    newGroup.setCourse(course);
+    	    newGroup.setEducationType(educationType);
+    	    
+    	    try {
+    	        // Добавляем группу в базу данных
+    	        Long index = dao.insert(newGroup);
+    	        System.out.println("Группа успешно добавлен. ID: " + index);
+    	        
+    	        // Перенаправляем на страницу с обновленным списком
+    	        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/group.jsp");
+    		    dispatcher.include(request, response);
+    	 
+    	        
+    	    } catch (Exception e) {
+    	        e.printStackTrace();
+    	        // В случае ошибки сохраняем сообщение и возвращаем на форму
+    	        request.setAttribute("errorMessage", "Ошибка при добавлении группы: " + e.getMessage());
+    	        request.getRequestDispatcher("/views/group.jsp").forward(request, response);
+    	    }
+    	}
+    
 }

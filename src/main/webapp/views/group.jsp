@@ -5,9 +5,9 @@
 
 <!DOCTYPE html>
 <html>
+<meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+<title>Группы</title>
 <head>
-    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
-    <title>Группы</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -20,7 +20,7 @@
         <jsp:include page="/views/header.jsp" />
         <div class="container-fluid">
             <div class="row justify-content-start">
-                <div class="col-12 border bg-light px-4">
+                <div class="col-8 border bg-light px-4">
                     <h3>Список групп</h3>
                     <table class="table">
                         <thead>
@@ -55,47 +55,55 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="col-12 border px-4 mt-3">
+                <div class="col-4 border px-4">
                     <form method="POST" action="">
                         <h3>Новая группа</h3>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="groupName" class="form-label">Наименование</label>
-                                    <input type="text" class="form-control" id="groupName" name="groupName" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="faculty" class="form-label">Факультет</label>
-                                    <input type="text" class="form-control" id="faculty" name="faculty" required>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="course" class="form-label">Курс</label>
-                                    <select class="form-select" id="course" name="course" required>
-                                        <option value="">Выберите курс</option>
-                                        <option value="1">1 курс</option>
-                                        <option value="2">2 курс</option>
-                                        <option value="3">3 курс</option>
-                                        <option value="4">4 курс</option>
-                                        <option value="5">5 курс</option>
-                                        <option value="6">6 курс</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="educationType" class="form-label">Вид обучения</label>
-                                    <select class="form-select" id="educationType" name="educationType" required>
-                                        <option value="">Выберите вид обучения</option>
-                                        <option value="Очная">Очная</option>
-                                        <option value="Очно-заочная">Очно-заочная</option>
-                                        <option value="Заочная">Заочная</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
                         <div class="mb-3">
-                            <button type="submit" class="btn btn-primary">Добавить группу</button>
+                            <label for="inputGroupName" class="col-sm-3 col-form-label">Наименование</label>
+                            <div class="col-sm-6">
+                                <input type="text" name="groupName" class="form-control" id="inputGroupName" maxlength="50" required />
+                            </div>
                         </div>
+                        
+                        <div class="mb-3">
+                            <label for="inputFaculty" class="col-sm-3 col-form-label">Факультет</label>
+                            <div class="col-sm-6">
+                                <input type="text" name="faculty" class="form-control" id="inputFaculty" maxlength="100" required />
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="inputCourse" class="col-sm-3 col-form-label">Курс</label>
+                            <div class="col-sm-6">
+                                <select name="course" class="form-control" id="inputCourse" required>
+                                    <option value="">Выберите курс</option>
+                                    <option value="1">1 курс</option>
+                                    <option value="2">2 курс</option>
+                                    <option value="3">3 курс</option>
+                                    <option value="4">4 курс</option>
+                                    <option value="5">5 курс</option>
+                                    <option value="6">6 курс</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="inputEducationType" class="col-sm-3 col-form-label">Вид обучения</label>
+                            <div class="col-sm-6">
+                                <select name="educationType" class="form-control" id="inputEducationType" required>
+                                    <option value="">Выберите вид обучения</option>
+                                    <option value="Очная">Очная</option>
+                                    <option value="Очно-заочная">Очно-заочная</option>
+                                    <option value="Заочная">Заочная</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <p>
+                            <br><br><br>
+                            <button type="submit" class="btn btn-primary">Добавить</button>
+                            <br>
+                        </p>
                     </form>
                 </div>
             </div>

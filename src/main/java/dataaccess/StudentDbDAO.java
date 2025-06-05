@@ -43,7 +43,9 @@ public class StudentDbDAO implements RepositoryDAO<Student> {
     public Long insert(Student student) throws Exception {
         try (Connection con = getConnection();
              PreparedStatement pst = con.prepareStatement(INSERT_STUDENT, new String[] { "id" })) {
-            
+        	System.out.println(student);
+            // pst.setLong(1, student.getId());
+            pst.setLong(1, 5L);
             pst.setString(1, student.getLastName());
             pst.setString(2, student.getFirstName());
             pst.setString(3, student.getMiddleName());
