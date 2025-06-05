@@ -57,14 +57,22 @@
                                         <td>${student.getPhone()}</td>
                                         <td>${student.getEmail()}</td>
                                         <td>${student.getGroup()}</td>
-                                        <td nowrap>
-                                            <a href="#" role="button" class="btn btn-sm btn-outline-primary mr-1">
-                                                <img alt="Редактировать" src="images/edit.png" width="16">
-                                            </a>
-                                            <a href="#" role="button" class="btn btn-sm btn-outline-danger">
-                                                <img alt="Удалить" src="images/delete.png" width="16">
-                                            </a>
-                                        </td>
+                                            <td width="20">
+										        <a href='<c:url value="/editstudent?id=${student.getId()}" />'
+												    role="button" class="btn btn-outline-primary">
+											        <img alt="Редактировать"
+											        src="images/edit.png" width="20">
+										        </a>
+										    </td>
+                                            <td width="20">
+											    <a href='<c:url value="/deletestudent?id=${student.getId()}"/>' 
+											       role="button" 
+											       class="btn btn-outline-primary"
+											       onclick="return confirm('Удалить студента с кодом: ${student.getId()}?')">
+											        <img alt="Удалить" src="images/delete.png" width="20">
+											    </a>
+											</td>
+                                      
                                     </tr>
                                 </c:forEach>
                             </tbody>
